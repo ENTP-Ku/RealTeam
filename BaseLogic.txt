@@ -1,5 +1,5 @@
-리액트, sts, h2를 활용해서 게시판 웹앱을 제작한다.
-Lombok, Spring Data JPA, H2 Database, Spring Web, Spring Security 의존성을 미리 추가 했다.
+리액트, sts, MySql를 활용해서 게시판 웹앱을 제작한다.
+Lombok, Spring Data JPA, MySql Driver, Spring Web, Spring Security 의존성을 미리 추가 했다.
 db는 tcp 서버 모드로
 User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
 Record 테이블의 글번호는 최신의 레코드일수록 작다 즉, 마지막에 추가된 레코드의 글 번호는 1.
@@ -36,6 +36,7 @@ Wright.js는 글쓰기 페이지다.
 '제출버튼'을 누르면 Record 테이블에 글번호, 제목, 내용, 작성날짜, 아이디, 비밀번호가 추가된다.
 
 Detail.js는 상세내용 페이지다.
+Record테이블의 
 중앙 하단에 '목록버튼'이 있다.
 '목록버튼'을 클릭하면 
 
