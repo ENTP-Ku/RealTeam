@@ -3,6 +3,8 @@ Lombok, Spring Data JPA, H2 Database, Spring Web, Spring Security 의존성을 �
 db는 tcp 서버 모드로
 User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
 Record 테이블의 글번호는 최신의 레코드일수록 작다 즉, 마지막에 추가된 레코드의 글 번호는 1.
+Login.js, Create.js 는 누구나 접근가능
+Welcome.js, Wright.js, Detail,js 는 로그인된 사용자만 접근가능
 
 Login.js는 로그인 페이지다
 아이디입력칸, 비밀번호입력칸, 로그인버튼, 회원가입버튼이 있다.
