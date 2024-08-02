@@ -20,10 +20,6 @@ h2의 records테이블에서 아이디, 제목, 내용 칼럼이 출력된다.
 '글쓰기' 버튼이 있다.
 '글쓰기' 버튼을 클릭하면, Wright.js로 이동
 
-
-
-
-
 Lombok, Spring Data JPA, H2 Database, Spring Web, Spring Security 의존성을 미리 추가 했음
 db는 tcp 서버 모드로
 User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
