@@ -6,7 +6,7 @@ DB password: 1234
 User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
 Record 테이블의 글번호는 최신의 레코드일수록 작다 즉, 마지막에 추가된 레코드의 글 번호는 1.
 Login.js, Create.js 는 누구나 접근가능
-Welcome.js, Wright.js, Detail,js 는 로그인된 사용자만 접근가능
+Welcome.js, Wright.js, Detail,js 는 로그인권한이 부여된 사용자만 접근가능
 getter, setter 생성시에는 lombok을 활용한다
 maven모드로 작업
 spring.jpa.hibernate.ddl-auto=create
@@ -48,4 +48,4 @@ Record테이블의 제목, 아이디, 내용, 작성날짜가 출력된다. Welc
 중앙 하단에 '목록버튼'이 있다.
 '목록버튼'을 클릭하면 Welcome.js로 이동.
 
-결론: 프로젝트 구조를 완성하는데 필요한 모든 파일을 빠짐없이 작성. 또한 모든 코드에 한줄한줄 상세하게 설명주석을 쓴다.
+결론: 프로젝트 구조를 완성하는데 필요한 모든 파일을 빠짐없이 작성. 또한 모든 코드에 한줄한줄 상세하게 설명주석을 입력한다.
