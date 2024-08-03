@@ -1,6 +1,8 @@
 리액트, sts, MySql를 활용해서 게시판 웹앱을 제작한다.
 Lombok, Spring Data JPA, MySql Driver, Spring Web, Spring Security 의존성을 미리 추가 했다.
-db는 tcp 서버 모드로
+DB이름: TeamProject
+DB username: root
+DB password: 1234
 User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
 Record 테이블의 글번호는 최신의 레코드일수록 작다 즉, 마지막에 추가된 레코드의 글 번호는 1.
 Login.js, Create.js 는 누구나 접근가능
