@@ -1,44 +1,45 @@
-// Login.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // useNavigate를 import합니다.
 
-const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옵니다.
 
-  const handleLogin = () => {
-    axios.post('/api/login', { username, password })
-      .then(response => {
-        // 로그인 성공 시, 응답에서 토큰을 저장합니다.
-        localStorage.setItem('authToken', response.data.token);
-        navigate('/welcome'); // 로그인 성공 후 Welcome 페이지로 이동
-      })
-      .catch(error => {
-        console.error('Error logging in:', error);
-      });
-  };
+    const handleSubmit = () => {
+        fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        })
+        .then(response => {
+            if (response.ok) {
+                navigate('/welcome'); // 로그인 성공 시 Welcome 페이지로 이동합니다.
+            } else {
+                return response.json().then(data => alert(data.message));
+            }
+        })
+        .catch(error => alert('로그인 중 오류가 발생했습니다.'));
+    };
 
-  return (
-    <div>
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={() => navigate('/create')}>Sign Up</button>
-    </div>
-  );
-};
+    return (
+        <div>
+            <input
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                placeholder="아이디"
+            />
+            <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="비밀번호"
+            />
+            <button onClick={handleSubmit}>로그인</button>
+            <button onClick={() => navigate('/create')}>회원가입</button> {/* 회원가입 페이지로 이동 */}
+        </div>
+    );
+}
 
 export default Login;

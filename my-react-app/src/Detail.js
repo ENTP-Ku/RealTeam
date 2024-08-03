@@ -1,36 +1,32 @@
-// Detail.js
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom'; // useNavigate를 import합니다.
 
-const Detail = () => {
-  const { id } = useParams();
-  const [record, setRecord] = useState(null);
-  const navigate = useNavigate();
+function Detail() {
+    const { id } = useParams();
+    const [record, setRecord] = useState(null);
+    const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옵니다.
 
-  useEffect(() => {
-    axios.get(`/api/records/${id}`)
-      .then(response => {
-        setRecord(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching record details:', error);
-      });
-  }, [id]);
+    useEffect(() => {
+        fetch(`/api/records/${id}`)
+            .then(response => response.json())
+            .then(data => setRecord(data));
+    }, [id]);
 
-  if (!record) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div>
-      <h2>{record.title}</h2>
-      <p>By: {record.user.username}</p>
-      <p>Date: {new Date(record.createdDate).toLocaleDateString()}</p>
-      <p>{record.content}</p>
-      <button onClick={() => navigate('/welcome')}>Back to List</button>
-    </div>
-  );
-};
+    return (
+        <div>
+            {record ? (
+                <div>
+                    <h1>{record.title}</h1>
+                    <p>작성자: {record.username}</p>
+                    <p>{record.content}</p>
+                    <p>작성날짜: {record.createdDate}</p>
+                    <button onClick={() => navigate('/welcome')}>목록으로</button> {/* useNavigate의 navigate를 사용하여 페이지 이동 */}
+                </div>
+            ) : (
+                <p>로딩중...</p>
+            )}
+        </div>
+    );
+}
 
 export default Detail;
