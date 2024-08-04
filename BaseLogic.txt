@@ -1,4 +1,6 @@
 리액트, sts, MySql를 활용해서 게시판 웹앱을 제작한다.
+스프링부트 2.7.5 에서 작업
+자바 버전 11에서 작업
 Lombok, Spring Data JPA, MySql Driver, Spring Web, Spring Security 의존성을 미리 추가 했다.
 DB이름: TeamProject
 DB username: root
@@ -6,10 +8,13 @@ DB password: 1234
 User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
 Record 테이블의 글번호는 최신의 레코드일수록 작다 즉, 마지막에 추가된 레코드의 글 번호는 1.
 Login.js, Create.js 는 누구나 접근가능
-Welcome.js, Wright.js, Detail,js 는 로그인된 사용자만 접근가능
+Welcome.js, Write.js, Detail,js 는 로그인된 사용자만 접근가능
 getter, setter 생성시에는 lombok을 활용한다
 maven모드로 작업
 spring.jpa.hibernate.ddl-auto=create
+package.json의 scripts에 "postbuild": "xcopy /s /e /y /i build C:\RealTeam\demo\src\main\resources\static" 행 추가해서 빌드폴더 생성시 자동으로 복사
+리액트 라우터 패키지를 설치하고 5.3.0버전으로 교체
+시큐리티 사용자이름은 qwer 로, 비밀번호는 qwer로 설정
 
 Login.js는 로그인 페이지다
 아이디입력칸, 비밀번호입력칸, 로그인버튼, 회원가입버튼이 있다.
@@ -35,9 +40,9 @@ Record테이블에서 글번호 ,제목, 작성날짜, 아이디 칼럼을 4열 
 우측 상단에 '로그아웃버튼'이 있다.
 '로그아웃버튼'을 클릭하면 Login.js로 이동하며, 로그인 권한을 제거한다
 우측 하단에'글쓰기' 버튼이 있다.
-'글쓰기' 버튼을 클릭하면, Wright.js로 이동
+'글쓰기' 버튼을 클릭하면, Write.js로 이동
 
-Wright.js는 글쓰기 페이지다.
+Write.js는 글쓰기 페이지다.
 로그인 권한이 부여되지않은 사용자가 접근하려하면 '로그인 해주세요' 알림 출력 후 Login.js로 이동
 제목 입력칸, 내용 입력칸, '제출버튼'이 있다.
 '제출버튼'을 누르면 Record 테이블에 글번호, 제목, 내용, 작성날짜, 아이디, 비밀번호가 추가된다.
@@ -48,4 +53,9 @@ Record테이블의 제목, 아이디, 내용, 작성날짜가 출력된다. Welc
 중앙 하단에 '목록버튼'이 있다.
 '목록버튼'을 클릭하면 Welcome.js로 이동.
 
-결론: 프로젝트 구조를 완성하는데 필요한 모든 파일을 빠짐없이 작성. 또한 모든 코드에 한줄한줄 상세하게 설명주석을 쓴다.
+App.js와 Index.js를 재작성
+
+지시사항:
+프로젝트 구조를 완성하는데 필요한 모든 파일을 빠짐없이 작성.
+모든 코드에 한줄한줄 상세하게 설명주석을 쓴다.
+
