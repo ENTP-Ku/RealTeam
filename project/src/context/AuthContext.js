@@ -4,7 +4,7 @@ import axios from 'axios'; // 서버와 통신하기 위해 axios를 사용
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const login = async (username, password) => {
     try {

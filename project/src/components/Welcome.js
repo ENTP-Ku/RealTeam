@@ -1,65 +1,72 @@
+// src/components/Welcome.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import axios from 'axios'; // axios를 사용하여 서버와 통신
+import axios from 'axios';
 
 const Welcome = () => {
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-  const [records, setRecords] = useState([]); // Record 데이터를 저장할 상태
+    const [records, setRecords] = useState([]);
+    const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+    useEffect(() => {
+        const fetchRecords = async () => {
+            try {
+                const response = await axios.get('/api/records');
+                setRecords(response.data);
+            } catch (err) {
+                console.error('Failed to fetch records');
+            }
+        };
 
-  const handleWrite = () => {
-    navigate('/write');
-  };
+        fetchRecords();
+    }, []);
 
-  // 서버에서 Record 데이터를 가져오는 함수
-  const fetchRecords = async () => {
-    try {
-      const response = await axios.get('/api/records'); // 서버의 Record 데이터 API
-      setRecords(response.data); // 상태 업데이트
-    } catch (error) {
-      console.error('데이터를 가져오는 중 오류 발생:', error);
-    }
-  };
+    const handleLogout = () => {
+        axios.post('/api/logout').then(() => {
+            navigate('/login');
+        });
+    };
 
-  useEffect(() => {
-    fetchRecords(); // 컴포넌트가 마운트될 때 데이터 가져오기
-  }, []);
+    const handleWrite = () => {
+        navigate('/write');
+    };
 
-  return (
-    <div>
-      <button onClick={handleLogout}>로그아웃</button>
-      <button onClick={handleWrite}>글쓰기</button>
-      <div>
-        <h2>Record 목록</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>제목</th>
-              <th>내용</th>
-              <th>작성일</th>
-              <th>작성자</th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((record) => (
-              <tr key={record.id}>
-                <td>{record.title}</td>
-                <td>{record.content}</td>
-                <td>{new Date(record.createdDate).toLocaleDateString()}</td>
-                <td>{record.username}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+    const handleDetail = (id) => {
+        navigate(`/detail/${id}`);
+    };
+
+    return (
+        <div>
+            <h2>Welcome</h2>
+            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleWrite}>Write</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {records.map(record => (
+                        <tr key={record.id}>
+                            <td>{record.id}</td>
+                            <td>
+                                {/* Button styled as a link */}
+                                <button
+                                    style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                                    onClick={() => handleDetail(record.id)}
+                                >
+                                    {record.title}
+                                </button>
+                            </td>
+                            <td>{record.date}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 };
 
 export default Welcome;

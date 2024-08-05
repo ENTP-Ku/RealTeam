@@ -1,21 +1,45 @@
-import React from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+// src/components/Detail.js
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Detail = () => {
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get('id');
-  const navigate = useNavigate();
+    const [record, setRecord] = useState(null);
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-  const handleBack = () => {
-    navigate('/welcome');
-  };
+    useEffect(() => {
+        const fetchRecord = async () => {
+            try {
+                const response = await axios.get(`/api/record/${id}`);
+                setRecord(response.data);
+            } catch (err) {
+                console.error('Failed to fetch record');
+            }
+        };
 
-  return (
-    <div>
-      {/* Record 데이터를 가져와서 상세내용을 렌더링해야 함 */}
-      <button onClick={handleBack}>목록</button>
-    </div>
-  );
+        fetchRecord();
+    }, [id]);
+
+    const handleBack = () => {
+        navigate('/welcome');
+    };
+
+    return (
+        <div>
+            <h2>Detail</h2>
+            {record ? (
+                <div>
+                    <h3>{record.title}</h3>
+                    <p>{record.content}</p>
+                    <p>By {record.username} on {record.date}</p>
+                    <button onClick={handleBack}>Back</button>
+                </div>
+            ) : (
+                <p>Loading...</p>
+            )}
+        </div>
+    );
 };
 
 export default Detail;

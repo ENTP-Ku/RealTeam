@@ -1,0 +1,15 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    // 실제 데이터베이스나 다른 방법으로 사용자 인증을 처리합니다.
+    public boolean authenticate(String username, String password) {
+        // 예시로 하드코딩된 사용자 인증을 수행합니다.
+        String correctUsername = "user";
+        String correctPassword = "password";
+        return username.equals(correctUsername) && password.equals(correctPassword);
+    }
+}

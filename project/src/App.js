@@ -1,27 +1,25 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Welcome from './components/Welcome';
+import Detail from './components/Detail';
+import Write from './components/Write';
 import Login from './components/Login';
 import Create from './components/Create';
-import Welcome from './components/Welcome';
-import Write from './components/Write';
-import Detail from './components/Detail';
-import { useAuth } from './context/AuthContext';
 
 const App = () => {
-  const { isAuthenticated } = useAuth();
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/welcome" element={isAuthenticated ? <Welcome /> : <Login />} />
-        <Route path="/write" element={isAuthenticated ? <Write /> : <Login />} />
-        <Route path="/detail" element={isAuthenticated ? <Detail /> : <Login />} />
-        <Route path="/" element={<Login />} /> {/* 기본 경로 추가 */}
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Login />} /> {/* 루트 경로를 Welcome 컴포넌트로 설정 */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/create" element={<Create />} />
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/write" element={<Write />} />
+                <Route path="/detail/:id" element={<Detail />} />
+            </Routes>
+        </Router>
+    );
 };
 
 export default App;
