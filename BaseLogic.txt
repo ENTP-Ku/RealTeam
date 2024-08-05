@@ -17,6 +17,7 @@ package.json의 scripts에 "postbuild": "xcopy /s /e /y /i build C:\RealTeam\dem
 리액트 라우터 패키지를 설치하고 5.3.0버전으로 교체
 시큐리티 사용자이름은 qwer 로, 비밀번호는 qwer로 설정
 파일들의 버전호환을 고려하여 작성한다
+Spring Boot에서 모든 경로를 React의 index.html로 리다이렉트하도록 WebMvcConfigurer를 설정
 
 컴포넌트와 클래스 작성:
 Login.js는 로그인 페이지다

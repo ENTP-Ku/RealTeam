@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './components/Welcome';
@@ -11,7 +10,7 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Login />} /> {/* 루트 경로를 Welcome 컴포넌트로 설정 */}
+                <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/create" element={<Create />} />
                 <Route path="/welcome" element={<Welcome />} />
