@@ -1,22 +1,26 @@
 package com.example.demo.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
-@Data // Lombok 어노테이션으로 getter, setter 자동 생성
 @Entity
-@Table(name = "List") // 테이블 이름을 'List'로 설정
+@Table(name = "List") // 테이블 이름을 'List'로 변경
+@Getter
+@Setter
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String uniqueCode;
 }

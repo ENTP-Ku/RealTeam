@@ -1,0 +1,47 @@
+package com.example.demo.controller;
+
+import com.example.demo.repository.UserRepository;
+import com.example.demo.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api")
+public class AuthController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화/복호화 처리
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+        
+        // 사용자 조회
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        // 사용자가 존재하는지 확인
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            // 비밀번호 비교
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                // 로그인 성공
+                return ResponseEntity.ok(Map.of("success", true));
+            } else {
+                // 비밀번호 불일치
+                return ResponseEntity.ok(Map.of("success", false, "message", "아이디 또는 비밀번호가 잘못되었습니다."));
+            }
+        } else {
+            // 사용자 존재하지 않음
+            return ResponseEntity.ok(Map.of("success", false, "message", "아이디가 존재하지 않습니다."));
+        }
+    }
+}
