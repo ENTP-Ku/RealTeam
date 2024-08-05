@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -17,21 +18,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 	    http
 	        .authorizeRequests()
-	            .antMatchers("/login", "/create", "/api/login", "/api/create").permitAll() // 로그인, 회원가입, API 요청은 허용
-	            .antMatchers("/welcome", "/write", "/detail/**").authenticated() // 인증된 사용자만 접근할 수 있도록 설정
+	            .antMatchers("/login", "/create", "/api/login", "/api/create").permitAll()
+	            .antMatchers("/welcome", "/write", "/detail/**").authenticated()
 	            .and()
 	        .csrf().disable()
 	        .formLogin()
-	            .loginPage("/login") // 로그인 페이지 URL 설정
-	            .permitAll() // 로그인 페이지는 모든 사용자에게 허용
-	            .defaultSuccessUrl("/welcome", true) // 로그인 성공 후 리다이렉트 URL
-	            .failureUrl("/login?error=true") // 로그인 실패 시 리다이렉트 URL
+	            .loginPage("/login")
+	            .permitAll()
+	            .defaultSuccessUrl("/welcome", true)
+	            .failureUrl("/login?error=true")
 	            .and()
 	        .logout()
-	            .logoutUrl("/logout") // 로그아웃 URL 설정
-	            .logoutSuccessUrl("/login") // 로그아웃 성공 후 리다이렉트 URL
-	            .permitAll(); // 로그아웃 URL은 모든 사용자에게 허용
+	            .logoutUrl("/logout")
+	            .logoutSuccessUrl("/login")
+	            .permitAll()
+	            .and()
+	        .sessionManagement()
+	            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+	            .sessionFixation().none()  // 세션 고정 보호 비활성화 (테스트 용도)
+	            .maximumSessions(1)
+	            .expiredUrl("/login?expired");
 	}
+
 
     
     @Bean
