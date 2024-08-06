@@ -1,9 +1,0 @@
-package com.example.demo.repository;
-
-import com.example.demo.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface UserRepository extends JpaRepository<User, Long> {
-    boolean existsByUniqueCode(String uniqueCode); // 고유번호로 존재 여부 확인
-    User findByIdAndPassword(String id, String password); // ID와 비밀번호로 사용자 조회
-}
