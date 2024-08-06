@@ -12,13 +12,14 @@ Login.js, Create.js 는 누구나 접근가능
 Welcome.js, Write.js, Detail,js 는 로그인된 사용자만 접근가능
 getter, setter 생성시에는 lombok을 활용한다
 maven모드로 작업
-spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=update
 package.json의 scripts에 "postbuild": "xcopy /s /e /y /i build C:\RealTeam\demo\src\main\resources\static" 행 추가해서 빌드폴더 생성시 자동으로 복사
 리액트 라우터 패키지를 설치하고 5.3.0버전으로 교체
+axios 패키지 사용
 시큐리티 사용자이름은 qwer 로, 비밀번호는 qwer로 설정
 파일들의 버전호환을 고려하여 작성한다
-Spring Boot에서 모든 경로를 React의 index.html로 리다이렉트하도록 WebMvcConfigurer를 설정
-새로고침을 하더라도 세션을 유지할 수 있도록 SessionCreationPolicy.ALWAYS를 설정
+새로고침을 하더라도 세션을 유지할 수 있도록 SessionCreationPolicy.IF_REQUIRED를 설정
+레포지토리의 검색부분은 optional을 사용한다
 
 컴포넌트와 클래스 작성:
 Login.js는 로그인 페이지다
@@ -61,6 +62,6 @@ Record테이블의 제목, 아이디, 내용, 작성날짜가 출력된다. Welc
 App.js와 Index.js를 재작성
 
 지시사항:
-프로젝트 구조를 완성하는데 필요한 모든 파일을 빠짐없이 작성.
+앱이 작동하기위한 모든 파일과 세부 로직들을 빠짐없이 작성.
 모든 코드에 한줄한줄 상세하게 설명주석을 쓴다.
 
