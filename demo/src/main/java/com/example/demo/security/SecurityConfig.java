@@ -34,11 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	            .permitAll()
 	            .and()
 	        .sessionManagement()
-	            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-	            .sessionFixation().none()  // 세션 고정 보호 비활성화 (테스트 용도)
-	            .maximumSessions(1)
-	            .expiredUrl("/login?expired");
+	            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS); // 항상 세션 생성
+
+	    // 로그 추가
+	    System.out.println("Security configuration applied.");
 	}
+
 
 
     
