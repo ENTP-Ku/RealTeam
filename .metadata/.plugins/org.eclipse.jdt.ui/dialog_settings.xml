@@ -46,6 +46,7 @@
 		<item key="updateTextualMatches" value="false"/>
 		<item key="updateQualifiedNames" value="false"/>
 		<item key="patterns" value="*"/>
+		<item key="renameSubpackages" value="false"/>
 	</section>
 	<section name="NewAnnotationCreationWizard.dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="135"/>
