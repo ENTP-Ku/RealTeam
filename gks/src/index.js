@@ -1,13 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // React 18에서는 'react-dom/client'를 사용합니다.
-import App from './App';
+import ReactDOM from 'react-dom';
+import App from './App'; // App 컴포넌트 import
 
-// 루트 요소를 생성합니다.
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-// 앱을 루트에 렌더링합니다.
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <App /> {/* 전체 앱 렌더링 */}
+  </React.StrictMode>,
+  document.getElementById('root') // 'root' 엘리먼트에 렌더링
 );

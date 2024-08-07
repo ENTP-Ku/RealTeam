@@ -1,0 +1,1 @@
+package.json의 scripts에 "postbuild": "xcopy /s /e /y /i build C:\RealTeam\demo\src\main\resources\static" 행 추가해서 빌드폴더 생성시 자동으로 복사

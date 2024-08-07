@@ -8,19 +8,20 @@ DB username: root
 DB password: 1234
 User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
 Record 테이블의 글번호는 최신의 레코드일수록 작다 즉, 마지막에 추가된 레코드의 글 번호는 1.
-security 클래스를 작성하고 Login.js, Create.js 는 누구나 접근가능, Welcome.js, Write.js, Detail,js 는 로그인된 사용자만 접근가능 하도록 설정하되 보안 방식은 jwt로 정한다.
+security 클래스를 작성하고 Login.js, Create.js 는 누구나 접근가능, Welcome.js, Write.js, Detail,js 는 로그인된 사용자만 접근가능 하도록 설정.
+최신 스프링 시큐리티 설정 방법에 따라 SecurityFilterChain을 사용하며, antMatchers 메서드 대신 requestMatchers 메서드를 사용
 getter, setter 생성시에는 lombok을 활용한다
 maven모드로 작업
 spring.jpa.hibernate.ddl-auto=update
-package.json의 scripts에 "postbuild": "xcopy /s /e /y /i build C:\RealTeam\demo\src\main\resources\static" 행 추가해서 빌드폴더 생성시 자동으로 복사
-리액트 라우터 패키지를 설치하고 5.3.0버전으로 교체
+리액트 라우터 패키지는 6버전으로 한다
 axios 패키지 사용
 시큐리티 사용자이름은 qwer 로, 비밀번호는 qwer로 설정
 파일들의 버전호환을 고려하여 작성한다
 새로고침을 하더라도 세션을 유지할 수 있도록 SessionCreationPolicy.IF_REQUIRED를 설정
 레포지토리의 검색부분은 optional을 사용한다
 REST API 호출로 데이터를 전송해야함으로, @RestController 어노테이션을 사용한다.
-react와 연동하여 작업하기위해 WebConfig 클래스를 만들고 @CrossOrigin 어노테이션을 설정한다. 컴포넌트 또한 API 호출을 하도록 설정한다.
+react와 연동하여 작업하기위해 WebConfig 클래스를 만들고 @CrossOrigin 어노테이션을 설정한다(http://localhost:3000). 컴포넌트 또한 API 호출을 하도록 설정한다(http://localhost:8080/).
+
 
 컴포넌트와 클래스 작성:
 Login.js는 로그인 페이지다
@@ -33,11 +34,14 @@ Create.js는 회원가입 페이지다.
 만약 비밀번호와 비밀번호확인의 입력값이 같지않다면 '비밀번호가 일치하지 않습니다.' 알림 출력
 만약 이미 List테이블에 입력한 것과 같은 아이디가 존재한다면 '이미 존재하는 아이디 입니다.' 알림 출력.
 만약 이미 List테이블에 입력한 것과 같은 고유번호가 존재한다면 '이미 가입되어있습니다' 알림 출력.
-만약 List테이블에 입력값과 같은 아이디 또는 고유번호가 없다면 '환영합니다. 로그인 후 이용해주세요' 알림 출력, List테이블에 입력한 데이터 추가, Login.js로 이동.
-단, 비밀번호확인 값은 @Transient 어노테이션으로 db로 보내지 않는다
+만약 List테이블에 입력값과 같은 아이디 또는 고유번호가 없다면 '환영합니다. 로그인 후 이용해주세요' 알림 출력,
+List테이블에 입력한 데이터 추가하되 비밀번호는 BCrypt로 암호화할것, 
+Login.js로 이동.
+
 
 Login.js에서 아이디와 비밀번호를 입력하고 로그인 버튼을 눌렀을때,
-만약 입력한값과 같은 데이터가 List테이블에 존재한다면, 로그인 권한을 부여한 뒤 Welcome.js로 이동.
+만약 List테이블의 암호화 된 비밀번호와 아이디 데이터목록 중에서 입력한값과 일치하는것이 있다면,
+입력한 비밀번호 값과 테이블의 암호화 된 비밀번호 값을 비교하고 서로 일치한다면, 로그인 권한을 부여한 뒤 Welcome.js로 이동.
 만약 List테이블에 존재하지 않는 아이디라면 '등록되지않은 아이디 입니다.' 알림 출력
 만약 아이디는 존재하나 비밀번호가 존재하지않는다면 '비밀번호가 맞지않습니다.' 알림 출력
 
@@ -64,7 +68,68 @@ Record테이블의 제목, 아이디, 내용, 작성날짜가 출력된다. Welc
 App.js와 Index.js를 재작성
 
 지시사항:
-앱이 작동하기위한 모든 파일과 세부 로직들을 빠짐없이 작성.
-느리게 작업해도 상관없으니까 제발 생략하지말고 하나도 빠짐없이 작성
+1. 백엔드 (Spring Boot)
+
+User 엔티티 클래스
+테이블 이름을 'List'로 설정
+
+UserDTO 클래스
+비밀번호 확인을 진행
+
+Record 엔티티 클래스
+글번호가 최신일수록 작음
+
+UserRepository 인터페이스
+사용자 정보 검색을 위한 레포지토리
+
+RecordRepository 인터페이스
+게시글 정보 검색을 위한 레포지토리
+
+UserService 클래스
+사용자 관련 비즈니스 로직 처리
+
+RecordService 클래스
+게시글 관련 비즈니스 로직 처리
+
+UserController 클래스
+사용자 관련 REST API 제공
+
+RecordController 클래스
+게시글 관련 REST API 제공
+
+WebConfig 클래스
+CORS 설정
+
+SecurityConfig 클래스
+Spring Security 설정
+
+2. 프론트엔드 (React)
+
+App.js
+라우팅 설정 및 전체 앱 구성
+
+Index.js
+ReactDOM 렌더링
+
+Login.js
+로그인 페이지 컴포넌트
+
+Create.js
+회원가입 페이지 컴포넌트
+
+Welcome.js
+메인 게시판 페이지 컴포넌트
+
+Write.js
+글쓰기 페이지 컴포넌트
+
+Detail.js
+상세 페이지 컴포넌트
+
+auth.js
+로그인 및 인증 상태 관리 유틸리티
+
+파일구조는 위와같이 구성한다.
+요약없이, 한글자도 빠뜨리지말고, 상세하게 정리한 뒤 필요한 모든 클래스와 컴포넌스를 작성한다.
 모든 코드에 한줄한줄 상세하게 설명주석을 쓴다.
 
