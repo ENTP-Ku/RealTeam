@@ -25,6 +25,8 @@ react와 연동하여 작업하기위해 WebConfig 클래스를 만들고 @Cross
 App.js에서 ProtectedRoute컴포넌트를 사용하여 인증된 사용자만 접근할 수 있도록한다.
 기본페이지는 Login.js 
 로그인 시 세션을 생성하고, 세션 ID를 클라이언트에 쿠키로 전달합니다. 클라이언트는 이 쿠키를 서버에 대한 모든 요청에 포함시킵니다.
+SecurityConfig 클래스에 BCryptPasswordEncoder 빈을 정의
+새로고침 해도 인증상태 유지해야함
 
 컴포넌트와 클래스 작성:
 Login.js는 로그인 페이지다
@@ -106,6 +108,12 @@ CORS 설정
 SecurityConfig 클래스
 Spring Security 설정
 
+LoginRequest 클래스
+로그인 요청을 처리하기 위해 LoginRequest DTO 클래스 추가
+
+JwtTokenProvider 클래스
+JWT 토큰의 생성 및 검증
+
 2. 프론트엔드 (React)
 
 App.js
@@ -137,6 +145,9 @@ auth.js
 
 ProtectedRoute.js
 보호된 라우트 설정
+
+AuthContext.js
+애플리케이션 내에서 인증 상태를 관리하고, 로그인/로그아웃 상태를 전역적으로 제공하는 역할
 
 파일구조는 위와같이 구성한다.
 생략없이 필요한 모든 클래스와 컴포넌스를 작성한다.
