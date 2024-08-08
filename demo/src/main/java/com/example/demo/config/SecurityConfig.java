@@ -15,19 +15,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeHttpRequests((requests) -> requests
-                .antMatchers("/api/users/register", "/api/users/login").permitAll() // 누구나 접근 가능
-                .anyRequest().authenticated() // 로그인된 사용자만 접근 가능
+                .antMatchers("/login", "/register").permitAll()  // 로그인과 회원가입 페이지는 인증 없이 접근 가능
+                .anyRequest().authenticated()  // 다른 모든 요청은 인증된 사용자만 접근 가능
             )
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // 세션 유지
+            .formLogin().loginPage("/login").permitAll()  // 로그인 페이지는 인증 없이 접근 가능
+            .defaultSuccessUrl("/welcome", true)  // 로그인 성공 시 리다이렉트할 URL
+            .failureUrl("/login?error=true")  // 로그인 실패 시 리다이렉트할 URL
             .and()
-            .formLogin().loginPage("/login").permitAll()
-            .and()
-            .logout().permitAll();
+            .logout().permitAll();  // 로그아웃 페이지는 인증 없이 접근 가능
         return http.build();
     }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder(); // 비밀번호 암호화를 위한 Bean
+        return new BCryptPasswordEncoder();  // 비밀번호 암호화를 위한 Bean
     }
 }
