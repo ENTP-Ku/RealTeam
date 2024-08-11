@@ -1,13 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
-import { AuthProvider } from './AuthContext'; // 인증 상태를 전역적으로 관리
+import './index.css'; // 스타일 시트 추가
 
-ReactDOM.render(
+// ReactDOM의 root 요소를 얻어와서 App 컴포넌트를 렌더링
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
-    <AuthProvider> {/* 인증 상태 제공 */}
-      <App />
-    </AuthProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <App />
+  </React.StrictMode>
 );

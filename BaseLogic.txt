@@ -6,9 +6,8 @@ Lombok, Spring Data JPA, MySql Driver, Spring Web, Spring Security 의존성을 
 DB이름: TeamProject
 DB username: root
 DB password: 1234
-User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'List'로 변경한다
-Record 테이블의 글번호는 최신의 레코드일수록 작다 즉, 마지막에 추가된 레코드의 글 번호는 1.
-security 클래스를 작성하고 Login.js, Create.js 는 누구나 접근가능, Welcome.js, Write.js, Detail,js 는 로그인된 사용자만 접근가능 하도록 설정.
+User엔티티 클래스에서 생성하는 테이블 이름은 @Table 어노테이션을 써서 'UserList'로 변경한다
+Record 테이블의 글번호는 최신의 레코드일수록 작아야한다 즉, 마지막에 추가된 레코드의 글 번호는 1이 되도록 작성.
 getter, setter 생성시에는 lombok을 활용한다
 maven모드로 작업
 spring.jpa.hibernate.ddl-auto=update
@@ -18,12 +17,12 @@ axios 패키지 사용
 파일들의 버전호환을 고려하여 작성한다
 레포지토리의 검색부분은 optional을 사용한다
 REST API 호출로 데이터를 전송해야함으로, @RestController 어노테이션을 사용한다.
-react와 연동하여 작업하기위해 WebConfig 클래스를 만들고 @CrossOrigin 어노테이션을 설정한다(http://localhost:3000). 컴포넌트 또한 API 호출을 하도록 설정한다(http://localhost:8080/).
+WebConfig클래스에서 CORS를 설정한다. http://localhost:3000에서 오는 모든 요청을 허용하도록 백엔드에서 설정
+API 호출: 프론트엔드 애플리케이션에서 http://localhost:8080의 API를 호출하여 데이터를 요청하거나 전송합니다.
 App.js에서 ProtectedRoute컴포넌트를 사용하여 인증된 사용자만 접근할 수 있도록한다.
-기본페이지는 Login.js 
-로그인 시 세션을 생성하고, 세션 ID를 클라이언트에 쿠키로 전달합니다. 클라이언트는 이 쿠키를 서버에 대한 모든 요청에 포함시킵니다.
+기본페이지는 Login.js
+SecurityConfig 클래스에서 Login.js, Create.js 는 누구나 접근가능, Welcome.js, Write.js, Detail,js 는 로그인된 사용자만 접근가능 하도록 설정.
 SecurityConfig 클래스에 BCryptPasswordEncoder 빈을 정의
-SecurityConfig 클래스에 requestMatchers가 아닌 antMatchers를 사용
 JWT를 사용하여 클라이언트와 서버 간의 인증 상태를 유지한다.
 
 
@@ -44,7 +43,7 @@ Login.js로 이동.
 
 
 Login.js에서 아이디와 비밀번호를 입력하고 로그인 버튼을 눌렀을때,
-만약 List테이블의 암호화 된 비밀번호와 아이디 데이터목록 중에서 입력한값과 일치하는것이 있다면, 로그인 권한을 부여하고 jwt 토큰을 생성한 뒤 Welcome.js로 이동.
+만약 List테이블의 암호화 된 비밀번호와 아이디 데이터목록 중에서 입력한값과 일치하는것이 있다면, jwt를생성한 뒤 Welcome.js로 이동.
 만약 List테이블에 존재하지 않는 아이디라면 '등록되지않은 아이디 입니다.' 알림 출력
 만약 List테이블에 아이디는 존재하나 비밀번호가 일치하지 않는다면 '비밀번호가 일치하지 않습니다.' 알림 출력
 
@@ -53,7 +52,7 @@ Welcome.js는 메인 게시판 페이지다.
 Record테이블에서 글번호 ,제목, 작성날짜, 아이디 칼럼을 4열 표에 출력.
 제목은 하이퍼 텍스트이며, 클릭하면 해당 레코드의 글번호 데이터를 가지고 Detail.js로 이동
 우측 상단에 '로그아웃버튼'이 있다.
-'로그아웃버튼'을 클릭하면 Login.js로 이동하며, 로그인 권한을 제거하고 jwt 토큰 삭제.
+'로그아웃버튼'을 클릭하면 Login.js로 이동하며, jwt 토큰 삭제.
 우측 하단에'글쓰기' 버튼이 있다.
 '글쓰기' 버튼을 클릭하면, Write.js로 이동
 
@@ -68,90 +67,9 @@ Record테이블의 제목, 아이디, 내용, 작성날짜가 출력된다. Welc
 중앙 하단에 '목록버튼'이 있다.
 '목록버튼'을 클릭하면 Welcome.js로 이동.
 
-App.js와 Index.js를 재작성
 
-지시사항:
-1. 백엔드 (Spring Boot)
-
-User 엔티티 클래스
-테이블 이름을 'List'로 설정
-
-UserDTO 클래스
-비밀번호 확인을 진행
-
-Record 엔티티 클래스
-글번호가 최신일수록 작음
-
-UserRepository 인터페이스
-사용자 정보 검색을 위한 레포지토리
-
-RecordRepository 인터페이스
-게시글 정보 검색을 위한 레포지토리
-
-UserService 클래스
-사용자 관련 비즈니스 로직 처리
-
-RecordService 클래스
-게시글 관련 비즈니스 로직 처리
-
-UserController 클래스
-사용자 관련 REST API 제공
-
-RecordController 클래스
-게시글 관련 REST API 제공
-
-WebConfig 클래스
-CORS 설정
-
-SecurityConfig 클래스
-Spring Security 설정
-
-LoginRequest 클래스
-로그인 요청을 처리하기 위해 LoginRequest DTO 클래스 추가
-
-JwtTokenProvider 클래스
-JWT 토큰의 생성 및 검증
-
-JwtTokenFilter 클래스
-JWT 토큰을 추출하고 인증
-
-2. 프론트엔드 (React)
-
-App.js
-라우팅 설정 및 전체 앱 구성
-
-Index.js
-ReactDOM 렌더링
-
-Login.js
-로그인 페이지 컴포넌트
-
-Create.js
-회원가입 페이지 컴포넌트
-
-Welcome.js
-메인 게시판 페이지 컴포넌트
-
-Write.js
-글쓰기 페이지 컴포넌트
-
-Detail.js
-상세 페이지 컴포넌트
-
-LogoutButton.js
-로그아웃
-
-auth.js
-로그인 및 인증 상태 관리 유틸리티
-
-ProtectedRoute.js
-보호된 라우트 설정
-
-AuthContext.js
-애플리케이션 내에서 인증 상태를 관리하고, 로그인/로그아웃 상태를 전역적으로 제공하는 역할
-
-파일구조는 위와같이 구성한다.
-생략없이 필요한 모든 클래스와 컴포넌스를 작성한다.
+필요한 모든 클래스와 컴포넌스를 작성한다.
+모든 로직을 생략없이 작성한다.
 모든 코드에 한줄한줄 상세하게 설명주석을 쓴다.
-새로고침 해도 인증상태 유지해야함
+
 
