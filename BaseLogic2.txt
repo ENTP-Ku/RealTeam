@@ -66,3 +66,7 @@ MySql:
 DB이름: TeamProject
 DB username: root
 DB password: 1234
+
+리액트와 sts를 사용해 위와같은 조건으로 작동하기위한 컴포넌트와 클래스를 빠짐없이 작성한다.
+로직을 생략없이 전부 작성한다.
+"proxy": "http://localhost:8080"

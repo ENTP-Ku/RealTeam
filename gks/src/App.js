@@ -1,39 +1,24 @@
-import React, { useState } from 'react';
-import Login from './Login'; // 로그인 컴포넌트 가져오기
-import axios from 'axios';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Login from './Login';
+import Create from './Create';
+import Welcome from './Welcome';
+import Write from './Write';
+import Detail from './Detail';
 
-const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    // JWT 토큰 저장 여부에 따라 인증 상태 변경
-    const checkAuth = () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            axios.get('http://localhost:8080/protected', {
-                headers: { Authorization: `Bearer ${token}` }
-            })
-            .then(() => setIsAuthenticated(true))
-            .catch(() => setIsAuthenticated(false));
-        }
-    };
-
-    // 초기 인증 상태 확인
-    React.useEffect(() => {
-        checkAuth();
-    }, []);
-
-    return (
-        <div>
-            {isAuthenticated ? (
-                <div>
-                    <h1>Welcome!</h1>
-                    {/* 인증된 사용자를 위한 보호된 페이지 */}
-                </div>
-            ) : (
-                <Login /> // 로그인 컴포넌트를 보여줍니다
-            )}
-        </div>
-    );
-};
+function App() {
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/write" element={<Write />} />
+        <Route path="/detail/:id" element={<Detail />} />
+      </Routes>
+    </div>
+  );
+}
 
 export default App;
