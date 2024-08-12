@@ -27,10 +27,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO) {
         String result = userService.loginUser(loginDTO);
-        if (result.contains("token")) {
+
+        if (result != null && result.split("\\.").length == 3) {
+            // Simple check: JWTs typically have three parts separated by dots
             return ResponseEntity.ok().body(Map.of("token", result));
         } else {
             return ResponseEntity.ok().body(Map.of("loginError", result));
         }
     }
+
 }
