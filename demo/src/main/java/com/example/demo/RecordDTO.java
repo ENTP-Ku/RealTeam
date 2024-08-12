@@ -23,5 +23,6 @@ public class RecordDTO {
         this.username = username;
         this.date = date;
         this.content = content;
+        
     }
 }
