@@ -11,7 +11,7 @@ const Welcome = () => {
     if (!token) {
       navigate('/');
     } else {      
-      axios.get('http://localhost:8080/api/records', { headers: { Authorization: `Bearer ${token}` } })      
+      axios.get('/api/records', { headers: { Authorization: `Bearer ${token}` } })      
         .then(response => setRecords(response.data))        
         .catch(error => console.error('Error fetching records:', error));
         

@@ -68,6 +68,10 @@ Detail.js에서 전송받은 사용자의 아이디 값과 Listicle 테이블에
 두 값이 동일하다면 해당 레코드를 삭제하고 deleteSuccess변수에 '삭제되었습니다' 문자열 저장 후 프론트로 전송.
 두 값이 동일하지않다면 deleteError변수에 '삭제 권한이 없습니다.' 문자열 저장 후 프론트로 전송.
 
+토큰 유효성 검사를 위해 클라이언트로부터 토큰을 받아올때 Bearer 접두사를 포함한 상태로 가져오게 되므로 오류없는 검사를 위해 접두사를 제거하는 작업을 거쳐야한다.
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+
 
 MySql:
 DB이름: TeamProject
