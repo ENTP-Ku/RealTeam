@@ -24,7 +24,8 @@ const Write = () => {
       return;
     }
     
-    const token = sessionStorage.getItem('token');  
+    const token = sessionStorage.getItem('token');
+    console.log(token.trim())  
     
     try {
       await axios.post('/api/write', { title, content }, { headers: { Authorization: `Bearer ${token.trim()}` } });
@@ -32,6 +33,7 @@ const Write = () => {
       console.log("성공!")
     } catch (error) {
       console.error('Write error:', error);
+      console.log("또 실패")
     }
   };
       
