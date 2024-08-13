@@ -24,11 +24,10 @@ const Write = () => {
       return;
     }
     
-    const token = sessionStorage.getItem('token');
-    console.log(token.trim())  
+    const token = sessionStorage.getItem('token');  
     
     try {
-      await axios.post('/api/write', { title, content }, { headers: { Authorization: `Bearer ${token.trim()}` } });
+      await axios.post('/api/write', { title, content }, { headers: { Authorization: `Bearer ${token}` } });
       navigate('/welcome');
       console.log("성공!")
     } catch (error) {

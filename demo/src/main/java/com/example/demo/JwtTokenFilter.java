@@ -25,12 +25,26 @@ public class JwtTokenFilter extends UsernamePasswordAuthenticationFilter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String token = httpRequest.getHeader("Authorization");
+        
+        // 디버깅 로그 추가
+        System.out.println("Received token: " + token);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            String username = jwtTokenProvider.getUsernameFromToken(token);
-            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(username, null, null));
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7); // "Bearer " 접두사 제거
+            if (jwtTokenProvider.validateToken(token)) {
+                String username = jwtTokenProvider.getUsernameFromToken(token);
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(username, null, null));
+                System.out.println("Token validated successfully. Username: " + username);
+            } else {
+                System.out.println("Token validation failed.");
+            }
+        } else {
+            System.out.println("Token is missing or does not start with Bearer.");
         }
 
         chain.doFilter(request, response);
     }
+    
+    
+
 }

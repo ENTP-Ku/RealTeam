@@ -7,13 +7,14 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem('token');    
     if (!token) {
       navigate('/');
-    } else {
-      axios.get('/api/records', { headers: { Authorization: `Bearer ${token}` } })
-        .then(response => setRecords(response.data))
+    } else {      
+      axios.get('http://localhost:8080/api/records', { headers: { Authorization: `Bearer ${token}` } })      
+        .then(response => setRecords(response.data))        
         .catch(error => console.error('Error fetching records:', error));
+        
     }
   }, [navigate]);
 

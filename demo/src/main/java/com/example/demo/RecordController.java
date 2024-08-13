@@ -22,11 +22,9 @@ public class RecordController {
 
 	@PostMapping("/write")
 	public ResponseEntity<?> createRecord(@RequestBody RecordDTO recordDTO, @AuthenticationPrincipal String username) {
-	    System.out.println("여기까지는 된다!");
 	    if (username == null || username.isEmpty()) {
 	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("유효하지 않은 토큰입니다.");
-	    }
-	    System.out.println("여기까지는 된다!!!!!!");
+	    }	   
 	    recordService.saveRecord(recordDTO, username);
 	    return ResponseEntity.ok("Record created successfully");
 	}

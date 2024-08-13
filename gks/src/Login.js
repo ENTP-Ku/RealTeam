@@ -8,7 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
+    try {      
       const response = await axios.post('/api/login', { username, password });
       if (response.data.token) {
         sessionStorage.setItem('token', response.data.token);
