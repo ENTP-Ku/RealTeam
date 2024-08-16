@@ -3,6 +3,7 @@ package com.example.demo;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -42,4 +43,21 @@ public class CommentService {
         Comment savedComment = commentRepository.save(comment);
         return new CommentDTO(savedComment);
     }
+
+    public CommentDTO updateComment(Long commentId, Comment updatedComment) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Comment existingComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        if (!existingComment.getUser().getUsername().equals(username)) {
+            throw new AccessDeniedException("권한이 없습니다."); // 권한 오류를 명확하게 처리
+        }
+
+        existingComment.setContent(updatedComment.getContent());
+        Comment savedComment = commentRepository.save(existingComment);
+        return new CommentDTO(savedComment);
+    }
 }
+

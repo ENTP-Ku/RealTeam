@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,9 @@ public class RecordService {
 
     @Autowired
     private RecordRepository recordRepository;
+
+    @Autowired
+    private CommentRepository commentRepository; // CommentRepository 추가
 
     public void saveRecord(RecordDTO recordDTO, String username) {
         Record record = new Record(recordDTO.getTitle(), recordDTO.getContent(), username, new Date());
@@ -28,9 +32,13 @@ public class RecordService {
         return new RecordDTO(record.getId(), record.getTitle(), record.getUsername(), record.getDate(), record.getContent());
     }
 
+    @Transactional
     public String deleteRecord(Long id, String username) {
         Record record = recordRepository.findById(id).orElseThrow();
         if (record.getUsername().equals(username)) {
+            // Record 삭제 전에 관련된 comment 삭제
+            commentRepository.deleteByRecordId(id);
+            // Record 삭제
             recordRepository.delete(record);
             return "deleteSuccess";
         } else {

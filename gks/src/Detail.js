@@ -65,20 +65,27 @@ const Detail = () => {
   const handleCommentEdit = async (commentId) => {
     const token = sessionStorage.getItem('token'); // 세션 스토리지에서 JWT 토큰을 가져옴
     try {
-      const response = await axios.put(`/api/detail/${id}/comments/${commentId}`, 
-      { content: editingContent }, // 수정된 댓글 내용을 서버에 전송
-      { headers: { Authorization: `Bearer ${token}` } });
-
-      setComments(comments.map(comment => 
+      const response = await axios.put(
+        `/api/detail/${id}/comments/${commentId}`,
+        { content: editingContent }, // 수정된 댓글 내용을 서버에 전송
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      setComments(comments.map(comment =>
         comment.id === commentId ? { ...comment, content: response.data.content } : comment
       )); // 수정된 댓글 내용을 상태에 반영
       setEditingCommentId(null); // 수정 모드를 종료
       setEditingContent(''); // 입력 필드를 초기화
     } catch (error) {
-      console.error('Error editing comment:', error); // 에러 발생 시 콘솔에 출력
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message); // 서버에서 반환한 메시지 표시
+      } else {
+        console.error('Error editing comment:', error); // 에러 발생 시 콘솔에 출력
+        alert('댓글 수정 중 오류가 발생했습니다.'); // 기본 오류 메시지
+      }
     }
   };
-
+  
   const handleCommentDelete = async (commentId) => {
     const token = sessionStorage.getItem('token'); // 세션 스토리지에서 JWT 토큰을 가져옴
     try {
