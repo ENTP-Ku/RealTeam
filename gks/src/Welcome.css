@@ -115,4 +115,9 @@ html, body {
   .write-button:hover {
     background-color: #0056b3; /* 버튼 호버 시 색상 변경 */
   }
+
+  .pre-wrap-text {
+    white-space: pre-wrap; /* 줄바꿈과 공백을 유지 */
+  }
+
   

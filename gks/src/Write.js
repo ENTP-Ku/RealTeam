@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Write.css'; // Write.css를 임포트합니다.
 
 const Write = () => {
   const [title, setTitle] = useState('');
@@ -37,12 +38,14 @@ const Write = () => {
   };
       
   return (
-    <div>
-      <h2>Write</h2>
-      <input type="text" placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
-      <textarea placeholder="Content" onChange={(e) => setContent(e.target.value)} />
-      <button onClick={handleSubmit}>Submit</button>
-      <button onClick={() => navigate('/welcome')}>Back to List</button>
+    <div className="write-container">
+      <div className="form-container">
+        <h2>Write</h2>
+        <input type="text" placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
+        <textarea placeholder="Content" onChange={(e) => setContent(e.target.value)} />
+        <button onClick={handleSubmit} className="submit-button">Submit</button>
+        <button onClick={() => navigate('/welcome')} className="back-button">Back to List</button>
+      </div>
     </div>
   );
 };
