@@ -59,5 +59,19 @@ public class CommentService {
         Comment savedComment = commentRepository.save(existingComment);
         return new CommentDTO(savedComment);
     }
+
+    public void deleteComment(Long commentId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        if (!comment.getUser().getUsername().equals(username)) {
+            throw new AccessDeniedException("권한이 없습니다."); // 권한 오류를 명확하게 처리
+        }
+
+        commentRepository.delete(comment);
+    }
 }
 
