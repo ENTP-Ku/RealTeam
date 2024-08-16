@@ -31,14 +31,17 @@ const Detail = () => {
     const token = sessionStorage.getItem('token');
     try {
       const response = await axios.delete(`/api/detail/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-      if (response.data.deleteSuccess) {
-        alert(response.data.deleteSuccess);
+      if (response.data.message === "삭제 성공") {
+        alert("삭제가 완료되었습니다.");
         navigate('/welcome');
-      } else if (response.data.deleteError) {
-        alert(response.data.deleteError);
+      } else if (response.data.message === "삭제 권한이 없습니다.") {
+        alert("삭제 권한이 없습니다.");
+      } else {
+        alert("알 수 없는 오류가 발생했습니다.");
       }
     } catch (error) {
       console.error('Delete error:', error);
+      alert('삭제 중 오류가 발생했습니다.'); // 기본 오류 메시지
     }
   };
 
@@ -69,7 +72,7 @@ const Detail = () => {
         { content: editingContent },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-  
+
       setComments(comments.map(comment =>
         comment.id === commentId ? { ...comment, content: response.data.content } : comment
       ));
@@ -84,16 +87,30 @@ const Detail = () => {
       }
     }
   };
-  
+
   const handleCommentDelete = async (commentId) => {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem('token'); // 세션 스토리지에서 JWT 토큰을 가져옴
     try {
-      await axios.delete(`/api/detail/${id}/comments/${commentId}`, { headers: { Authorization: `Bearer ${token}` } });
-      setComments(comments.filter(comment => comment.id !== commentId));
+        const response = await axios.delete(`/api/detail/${id}/comments/${commentId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        // 서버에서 삭제 성공 메시지를 받으면
+        if (response.data.message === "댓글이 삭제되었습니다.") {
+            setComments(comments.filter(comment => comment.id !== commentId)); // 댓글 삭제 후 목록 갱신
+        } else {
+            console.error('Unexpected response:', response);
+        }
     } catch (error) {
-      console.error('Error deleting comment:', error);
+        // 403 오류가 발생하면
+        if (error.response && error.response.status === 403) {
+            alert("삭제 권한이 없습니다."); // 권한이 없을 때 메시지 표시
+        } else {
+            console.error('Error deleting comment:', error); // 에러 발생 시 콘솔에 출력
+            alert('댓글 삭제 중 오류가 발생했습니다.'); // 기본 오류 메시지
+        }
     }
-  };
+};
 
   const startEditing = (comment) => {
     setEditingCommentId(comment.id);
