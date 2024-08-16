@@ -44,7 +44,7 @@ public class CommentController {
             CommentDTO commentDTO = commentService.updateComment(commentId, updatedComment);
             return ResponseEntity.ok(commentDTO);
         } catch (AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "댓글 수정 권한이 없습니다."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "댓글 수정 중 오류가 발생했습니다."));
         }
@@ -58,11 +58,9 @@ public class CommentController {
             commentService.deleteComment(commentId);
             return ResponseEntity.ok(Map.of("message", "댓글이 삭제되었습니다."));
         } catch (AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "삭제 권한이 없습니다."));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "댓글 삭제 중 오류가 발생했습니다."));
         }
     }
 }
-
-

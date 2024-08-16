@@ -69,7 +69,7 @@ const Detail = () => {
         { content: editingContent },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
+  
       setComments(comments.map(comment =>
         comment.id === commentId ? { ...comment, content: response.data.content } : comment
       ));
@@ -77,14 +77,14 @@ const Detail = () => {
       setEditingContent('');
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);
+        alert(error.response.data.message); // 서버에서 반환한 메시지를 alert로 표시
       } else {
         console.error('Error editing comment:', error);
-        alert('댓글 수정 중 오류가 발생했습니다.');
+        alert('댓글 수정 중 오류가 발생했습니다.'); // 기본 오류 메시지
       }
     }
   };
-
+  
   const handleCommentDelete = async (commentId) => {
     const token = sessionStorage.getItem('token');
     try {
