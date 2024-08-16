@@ -36,11 +36,15 @@ public class RecordController {
 
     @DeleteMapping("/detail/{id}")
     public ResponseEntity<?> deleteRecord(@PathVariable Long id, @AuthenticationPrincipal String username) {
+        if (username == null || username.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 권한이 없습니다.");
+        }
+
         String result = recordService.deleteRecord(id, username);
         if (result.equals("deleteSuccess")) {
-            return ResponseEntity.ok().body(Map.of("deleteSuccess", "삭제되었습니다"));
+            return ResponseEntity.ok().body(Map.of("message", "삭제가 완료되었습니다."));
         } else {
-            return ResponseEntity.ok().body(Map.of("deleteError", result));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "삭제 권한이 없습니다."));
         }
     }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import './Detail.css'; // Detail.css를 임포트합니다.
+import './Detail.css';
 
 const Detail = () => {
   const { id } = useParams();
@@ -30,18 +30,24 @@ const Detail = () => {
   const handleDelete = async () => {
     const token = sessionStorage.getItem('token');
     try {
-      const response = await axios.delete(`/api/detail/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-      if (response.data.message === "삭제 성공") {
-        alert("삭제가 완료되었습니다.");
-        navigate('/welcome');
-      } else if (response.data.message === "삭제 권한이 없습니다.") {
-        alert("삭제 권한이 없습니다.");
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
+        const response = await axios.delete(`/api/detail/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        // 성공 메시지 처리
+        if (response.data.message === "삭제가 완료되었습니다.") {
+            alert("삭제가 완료되었습니다.");
+            navigate('/welcome');
+        } else {
+            console.error('Unexpected response:', response);
+        }
     } catch (error) {
-      console.error('Delete error:', error);
-      alert('삭제 중 오류가 발생했습니다.'); // 기본 오류 메시지
+        // 권한 오류 처리
+        if (error.response && error.response.status === 403) {
+            alert("삭제 권한이 없습니다.");
+        } else {
+            console.error('Delete error:', error);
+        }
     }
   };
 
@@ -52,18 +58,27 @@ const Detail = () => {
 
   const handleCommentSubmit = async () => {
     const token = sessionStorage.getItem('token');
+  
+    // 댓글 입력 폼이 비어 있을 때 경고 메시지를 표시하고 함수 종료
+    if (newComment.trim() === '') {
+      alert("댓글을 입력해 주세요");
+      return;
+    }
+  
     try {
-      const response = await axios.post(`/api/detail/${id}/comments`,
+      const response = await axios.post(
+        `/api/detail/${id}/comments`,
         { content: newComment },
-        { headers: { Authorization: `Bearer ${token}` } });
-
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
       setComments([...comments, response.data]);
       setNewComment('');
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
   };
-
+  
   const handleCommentEdit = async (commentId) => {
     const token = sessionStorage.getItem('token');
     try {
@@ -80,37 +95,34 @@ const Detail = () => {
       setEditingContent('');
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message); // 서버에서 반환한 메시지를 alert로 표시
+        alert(error.response.data.message);
       } else {
         console.error('Error editing comment:', error);
-        alert('댓글 수정 중 오류가 발생했습니다.'); // 기본 오류 메시지
+        alert('댓글 수정 중 오류가 발생했습니다.');
       }
     }
   };
 
   const handleCommentDelete = async (commentId) => {
-    const token = sessionStorage.getItem('token'); // 세션 스토리지에서 JWT 토큰을 가져옴
+    const token = sessionStorage.getItem('token');
     try {
         const response = await axios.delete(`/api/detail/${id}/comments/${commentId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         
-        // 서버에서 삭제 성공 메시지를 받으면
         if (response.data.message === "댓글이 삭제되었습니다.") {
-            setComments(comments.filter(comment => comment.id !== commentId)); // 댓글 삭제 후 목록 갱신
+            setComments(comments.filter(comment => comment.id !== commentId));
         } else {
             console.error('Unexpected response:', response);
         }
     } catch (error) {
-        // 403 오류가 발생하면
         if (error.response && error.response.status === 403) {
-            alert("삭제 권한이 없습니다."); // 권한이 없을 때 메시지 표시
+            alert("삭제 권한이 없습니다.");
         } else {
-            console.error('Error deleting comment:', error); // 에러 발생 시 콘솔에 출력
-            alert('댓글 삭제 중 오류가 발생했습니다.'); // 기본 오류 메시지
+            console.error('Error deleting comment:', error);
         }
     }
-};
+  };
 
   const startEditing = (comment) => {
     setEditingCommentId(comment.id);
