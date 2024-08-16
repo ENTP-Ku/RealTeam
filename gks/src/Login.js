@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Login.css'; // 스타일 파일을 import합니다.
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -29,20 +30,22 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={() => navigate('/create')}>Sign Up</button>
+    <div className="login-container">
+      <div className="login-form">
+        <h2>Login</h2>
+        <input
+          type="text"
+          placeholder="Username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
+        <button onClick={() => navigate('/create')}>Sign Up</button>
+      </div>
     </div>
   );
 };
