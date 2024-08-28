@@ -11,11 +11,32 @@ const Create = () => {
 
   const handleSubmit = async () => {
     // 폼 제출 핸들러
-    if (password !== confirmPassword) {
-      // 비밀번호가 일치하지 않는 경우
-      alert("비밀번호가 일치하지 않습니다."); // 경고 메시지 표시
+
+    // 입력 값 유효성 검사
+    if (!/^[a-zA-Z0-9]{4,}$/.test(username)) {
+      // 아이디가 4자리 이상, 영문과 숫자만 포함하는지 확인
+      alert("아이디는 영문과 숫자 조합으로 4자리 이상이어야 합니다.");
       return;
     }
+
+    if (password.length < 8) {
+      // 비밀번호가 8자리 이상인지 확인
+      alert("비밀번호는 8자리 이상이어야 합니다.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      // 비밀번호와 비밀번호 확인이 일치하는지 확인
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    if (!/^\d{8}$/.test(employeeId)) {
+      // 직원 ID가 8자리 숫자인지 확인
+      alert("직원 ID는 8자리 숫자여야 합니다.");
+      return;
+    }
+
     try {
       const response = await axios.post("/api/create", {
         // 서버에 POST 요청
@@ -68,3 +89,4 @@ const Create = () => {
 };
 
 export default Create; // Create 컴포넌트를 기본 내보내기로 설정
+
